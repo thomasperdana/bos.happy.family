@@ -1,46 +1,557 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Happy Family - Live to the Fullest</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&family=Playfair+Display:ital,wght@0,700;1,700&display=swap"
+      rel="stylesheet"
+    />
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #020617;
-            color: white;
-            overflow-x: hidden;
+      body {
+        font-family: "Inter", sans-serif;
+        background-color: #020617; /* slate-950 */
+        color: white;
+        overflow-x: hidden;
+      }
+      .font-serif {
+        font-family: "Playfair Display", serif;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
         }
-        .font-serif {
-            font-family: 'Playfair Display', serif;
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .animate-fade-in {
-            animation: fadeIn 0.8s ease-out forwards;
-        }
-        .animate-delay-1 { animation-delay: 0.2s; }
-        .animate-delay-2 { animation-delay: 0.4s; }
-        .animate-delay-3 { animation-delay: 0.6s; }
+      }
+      .animate-fade-in {
+        animation: fadeIn 0.8s ease-out forwards;
+      }
+      /* Custom scrollbar for better aesthetics */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #0f172a;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #334155;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #475569;
+      }
+      .hidden {
+        display: none !important;
+      }
     </style>
-<script type="importmap">
-{
-  "imports": {
-    "react/": "https://esm.sh/react@^19.2.3/",
-    "react": "https://esm.sh/react@^19.2.3",
-    "react-dom/": "https://esm.sh/react-dom@^19.2.3/"
-  }
-}
-</script>
-</head>
-<body>
-    <div id="root"></div>
-</body>
+  </head>
+  <body class="min-h-screen bg-slate-950 text-white relative overflow-hidden">
+    <!-- Background Gradients -->
+    <div class="fixed inset-0 pointer-events-none">
+      <div
+        class="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-900/20 rounded-full blur-[120px]"
+      ></div>
+      <div
+        class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-indigo-900/20 rounded-full blur-[150px]"
+      ></div>
+      <div
+        class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-[radial-gradient(circle_at_center,_var(--tw-gradient-stops))] from-blue-950/30 via-transparent to-transparent"
+      ></div>
+    </div>
+
+    <!-- Main Content -->
+    <main
+      class="relative z-10 container mx-auto px-4 py-8 min-h-screen flex flex-col items-center justify-center"
+    >
+      <!-- INTRO SECTION (HERO) -->
+      <div
+        id="section-intro"
+        class="max-w-4xl w-full text-center space-y-12 animate-fade-in"
+      >
+        <div
+          class="inline-block px-4 py-1 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 font-semibold text-sm tracking-wider uppercase mb-4"
+        >
+          Welcome to the Inner Circle
+        </div>
+
+        <h1 class="text-5xl md:text-7xl font-extrabold tracking-tight">
+          Who are
+          <span
+            class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-indigo-500 font-serif italic"
+            >Happy Family</span
+          >
+        </h1>
+
+        <div class="grid md:grid-cols-2 gap-8 items-center mt-12">
+          <div class="relative group">
+            <div
+              class="absolute inset-0 bg-blue-500 rounded-3xl blur-2xl opacity-20 group-hover:opacity-30 transition-opacity"
+            ></div>
+            <img
+              src="https://picsum.photos/seed/happyfamily/800/600"
+              alt="Happy Family Moment"
+              class="relative rounded-3xl shadow-2xl border border-white/10 w-full"
+            />
+          </div>
+
+          <div class="text-left space-y-6 flex flex-col justify-center">
+            <p
+              class="text-xl md:text-2xl text-slate-300 leading-relaxed font-light"
+            >
+              Happy Family are people who
+              <span class="text-white font-semibold"
+                >enjoy life to the fullest.</span
+              >
+            </p>
+            <p class="text-lg text-slate-400 leading-relaxed">
+              We have fun and savor the moment in our lives like no other human
+              being on the planet.
+            </p>
+            <button
+              id="btn-start"
+              class="mt-4 px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-2xl shadow-lg shadow-blue-900/40 transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 group"
+            >
+              Start Your Journey
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="h-5 w-5 group-hover:translate-x-1 transition-transform"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="M13 7l5 5m0 0l-5 5m5-5H6"
+                />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORM SECTION -->
+      <form
+        id="section-form"
+        class="hidden max-w-2xl w-full bg-slate-900/50 backdrop-blur-xl border border-white/10 p-8 rounded-[2.5rem] shadow-2xl animate-fade-in space-y-10"
+      >
+        <div class="text-center space-y-2">
+          <h2 class="text-3xl font-bold">
+            Let’s see what you decide to enjoy:
+          </h2>
+          <p class="text-slate-400">Personalize your Happy Family experience</p>
+        </div>
+
+        <!-- Interests Selection -->
+        <div class="space-y-4">
+          <p class="font-semibold text-blue-400">Do you like...</p>
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 gap-4"
+            id="interests-grid"
+          >
+            <!-- Interest buttons will be generated mostly by JS or hardcoded below -->
+            <!-- Hardcoding them specifically to match structure, logic will handle class toggling -->
+
+            <button
+              type="button"
+              data-id="food"
+              class="interest-btn p-4 rounded-2xl border text-left transition-all flex items-center gap-4 bg-white/5 border-white/5 hover:bg-white/10 group"
+            >
+              <span class="text-2xl">🍕</span>
+              <span class="text-sm font-medium">Savoring Food</span>
+              <div
+                class="ml-auto bg-blue-500 rounded-full p-1 hidden check-icon"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="3"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              data-id="vacation"
+              class="interest-btn p-4 rounded-2xl border text-left transition-all flex items-center gap-4 bg-white/5 border-white/5 hover:bg-white/10 group"
+            >
+              <span class="text-2xl">✈️</span>
+              <span class="text-sm font-medium">Vacation with Your Family</span>
+              <div
+                class="ml-auto bg-blue-500 rounded-full p-1 hidden check-icon"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="3"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              data-id="moments"
+              class="interest-btn p-4 rounded-2xl border text-left transition-all flex items-center gap-4 bg-white/5 border-white/5 hover:bg-white/10 group"
+            >
+              <span class="text-2xl">✨</span>
+              <span class="text-sm font-medium"
+                >Celebrating Your Finest Moment in Time</span
+              >
+              <div
+                class="ml-auto bg-blue-500 rounded-full p-1 hidden check-icon"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="3"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+            </button>
+
+            <button
+              type="button"
+              data-id="health"
+              class="interest-btn p-4 rounded-2xl border text-left transition-all flex items-center gap-4 bg-white/5 border-white/5 hover:bg-white/10 group"
+            >
+              <span class="text-2xl">🥗</span>
+              <span class="text-sm font-medium">Being Healthy</span>
+              <div
+                class="ml-auto bg-blue-500 rounded-full p-1 hidden check-icon"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  class="h-4 w-4 text-white"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="3"
+                    d="M5 13l4 4L19 7"
+                  />
+                </svg>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Voucher Selection -->
+        <div class="space-y-4 pt-4 border-t border-white/5">
+          <p class="font-semibold text-blue-400">
+            So, if we start by giving you a free $500 gift card, would you
+            rather have:
+          </p>
+          <div class="flex flex-col md:flex-row gap-4">
+            <button
+              type="button"
+              data-value="restaurant"
+              class="voucher-btn flex-1 p-6 rounded-2xl border transition-all flex flex-col items-center gap-3 text-center bg-white/5 border-white/5 hover:bg-white/10"
+            >
+              <div class="text-4xl">🍽️</div>
+              <div class="font-bold">A Restaurant Voucher</div>
+            </button>
+            <button
+              type="button"
+              data-value="hotel"
+              class="voucher-btn flex-1 p-6 rounded-2xl border transition-all flex flex-col items-center gap-3 text-center bg-white/5 border-white/5 hover:bg-white/10"
+            >
+              <div class="text-4xl">🏨</div>
+              <div class="font-bold">A Hotel Voucher</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- Email and Agreement -->
+        <div class="space-y-6 pt-4 border-t border-white/5">
+          <div class="space-y-2">
+            <label
+              htmlFor="email"
+              class="block text-sm font-medium text-slate-300"
+              >Your Primary Email Address</label
+            >
+            <input
+              id="email"
+              type="email"
+              placeholder="name@example.com"
+              class="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+            />
+          </div>
+
+          <label class="flex items-start gap-4 cursor-pointer group">
+            <div class="relative mt-1">
+              <input id="agreed" type="checkbox" class="peer sr-only" />
+              <div
+                class="h-6 w-6 bg-white/5 border border-white/20 rounded-md transition-colors peer-checked:bg-blue-600 peer-checked:border-blue-600 group-hover:border-blue-400"
+              ></div>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                class="absolute top-1 left-1 h-4 w-4 text-white opacity-0 peer-checked:opacity-100 transition-opacity"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="3"
+                  d="M5 13l4 4L19 7"
+                />
+              </svg>
+            </div>
+            <span class="text-sm text-slate-400 leading-snug select-none">
+              By entering your email, you agree to receive free promotional
+              material, and get a free giveaway!
+              <span class="block mt-1 font-semibold text-blue-300"
+                >Have a Happy Family for the rest of your life.</span
+              >
+            </span>
+          </label>
+        </div>
+
+        <!-- Error Message -->
+        <div
+          id="error-message"
+          class="hidden bg-red-500/10 border border-red-500/20 text-red-400 text-sm p-4 rounded-xl text-center"
+        >
+          <!-- Error text injected here -->
+        </div>
+
+        <button
+          type="submit"
+          class="w-full py-5 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-black text-xl rounded-2xl shadow-xl transition-all transform hover:-translate-y-1 active:scale-95 shadow-blue-900/30"
+        >
+          CLAIM YOUR $500 REWARD
+        </button>
+      </form>
+
+      <!-- SUBMITTING SECTION -->
+      <div id="section-submitting" class="hidden text-center animate-fade-in">
+        <div
+          class="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-6"
+        ></div>
+        <h2 class="text-2xl font-bold mb-2">Processing Your Reward</h2>
+        <p class="text-slate-400">
+          Saving your preferences to our Happy Family database...
+        </p>
+      </div>
+    </main>
+
+    <footer class="relative z-10 py-6 text-center text-slate-500 text-sm">
+      &copy; <span id="year"></span> Happy Family Lifestyle. All rights
+      reserved.
+    </footer>
+
+    <script>
+      // Constants & Config
+      const RESTAURANT_URL =
+        "https://www.rewardsandincentives.com/?bcode=40da2c6eb4af643ce37c275f5538ef65";
+      const HOTEL_URL =
+        "https://www.rewardsandincentives.com/?bcode=30f25afa77048cb2edbd7f4096179830";
+
+      // State
+      let selectedInterests = [];
+      let selectedVoucher = null;
+
+      // Elements
+      const sectionIntro = document.getElementById("section-intro");
+      const sectionForm = document.getElementById("section-form");
+      const sectionSubmitting = document.getElementById("section-submitting");
+      const btnStart = document.getElementById("btn-start");
+      const form = document.getElementById("section-form");
+      const emailInput = document.getElementById("email");
+      const agreedInput = document.getElementById("agreed");
+      const errorMessage = document.getElementById("error-message");
+      const yearSpan = document.getElementById("year");
+
+      // Initialize Year
+      yearSpan.textContent = new Date().getFullYear();
+
+      // Navigation
+      btnStart.addEventListener("click", () => {
+        sectionIntro.classList.add("hidden");
+        sectionForm.classList.remove("hidden");
+      });
+
+      // Interests Logic
+      const interestBtns = document.querySelectorAll(".interest-btn");
+      interestBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const id = btn.getAttribute("data-id");
+          const checkIcon = btn.querySelector(".check-icon");
+
+          if (selectedInterests.includes(id)) {
+            selectedInterests = selectedInterests.filter((i) => i !== id);
+            // Remove styles
+            btn.classList.remove(
+              "bg-blue-600/20",
+              "border-blue-500",
+              "ring-2",
+              "ring-blue-500/50",
+              "shadow-lg",
+              "shadow-blue-900/20"
+            );
+            btn.classList.add(
+              "bg-white/5",
+              "border-white/5",
+              "hover:bg-white/10"
+            );
+            checkIcon.classList.add("hidden");
+          } else {
+            selectedInterests.push(id);
+            // Add styles
+            btn.classList.remove(
+              "bg-white/5",
+              "border-white/5",
+              "hover:bg-white/10"
+            );
+            btn.classList.add(
+              "bg-blue-600/20",
+              "border-blue-500",
+              "ring-2",
+              "ring-blue-500/50",
+              "shadow-lg",
+              "shadow-blue-900/20"
+            );
+            checkIcon.classList.remove("hidden");
+          }
+        });
+      });
+
+      // Voucher Logic
+      const voucherBtns = document.querySelectorAll(".voucher-btn");
+      voucherBtns.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const value = btn.getAttribute("data-value");
+          selectedVoucher = value;
+
+          // Reset all voucher buttons
+          voucherBtns.forEach((b) => {
+            b.classList.remove(
+              "bg-indigo-600/20",
+              "border-indigo-500",
+              "ring-2",
+              "ring-indigo-500/50"
+            );
+            b.classList.add(
+              "bg-white/5",
+              "border-white/5",
+              "hover:bg-white/10"
+            );
+          });
+
+          // Highlight selected
+          btn.classList.remove(
+            "bg-white/5",
+            "border-white/5",
+            "hover:bg-white/10"
+          );
+          btn.classList.add(
+            "bg-indigo-600/20",
+            "border-indigo-500",
+            "ring-2",
+            "ring-indigo-500/50"
+          );
+        });
+      });
+
+      // Form Submission
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        errorMessage.classList.add("hidden");
+        errorMessage.textContent = "";
+
+        // Validation
+        if (selectedInterests.length === 0) {
+          showError("Please select at least one interest.");
+          return;
+        }
+        if (!selectedVoucher) {
+          showError("Please select your preferred voucher.");
+          return;
+        }
+        if (!emailInput.value || !emailInput.value.includes("@")) {
+          showError("Please enter a valid email address.");
+          return;
+        }
+        if (!agreedInput.checked) {
+          showError("You must agree to the promotional materials.");
+          return;
+        }
+
+        // Submit
+        const data = {
+          interests: selectedInterests,
+          voucherPreference: selectedVoucher,
+          email: emailInput.value,
+          agreed: agreedInput.checked,
+        };
+
+        // Transition directly to submitting state (no React state lag)
+        sectionForm.classList.add("hidden");
+        sectionSubmitting.classList.remove("hidden");
+
+        console.log("Saving to Google Sheet...", data);
+
+        try {
+          // Simulate network delay
+          await new Promise((resolve) => setTimeout(resolve, 1500));
+
+          // Redirect
+          if (selectedVoucher === "restaurant") {
+            window.location.href = RESTAURANT_URL;
+          } else if (selectedVoucher === "hotel") {
+            window.location.href = HOTEL_URL;
+          }
+        } catch (error) {
+          console.error("Submission failed", error);
+          // Reset (in a real app, maybe show error, but keeping logical parity with React app which just resets step)
+          sectionSubmitting.classList.add("hidden");
+          sectionForm.classList.remove("hidden");
+        }
+      });
+
+      function showError(msg) {
+        errorMessage.textContent = msg;
+        errorMessage.classList.remove("hidden");
+      }
+    </script>
+  </body>
 </html>
