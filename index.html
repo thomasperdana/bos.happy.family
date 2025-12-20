@@ -413,274 +413,310 @@
     </footer>
 
     <script>
-      document.addEventListener('DOMContentLoaded', () => {
-      // Constants & Config
-      const RESTAURANT_URL =
-        "https://www.rewardsandincentives.com/?bcode=40da2c6eb4af643ce37c275f5538ef65";
-      const HOTEL_URL =
-        "https://www.rewardsandincentives.com/?bcode=30f25afa77048cb2edbd7f4096179830";
+      document.addEventListener("DOMContentLoaded", () => {
+        // Constants & Config
+        const RESTAURANT_URL =
+          "https://www.rewardsandincentives.com/?bcode=40da2c6eb4af643ce37c275f5538ef65";
+        const HOTEL_URL =
+          "https://www.rewardsandincentives.com/?bcode=30f25afa77048cb2edbd7f4096179830";
 
-      // Voucher API Config
-      const VOUCHER_API_BASE =
-        "https://www.creativemarketingincentives.biz/certapi";
-      const HOTEL_API_KEY = "e9f7559a82ae91a1bf2ee3bbb86d7439";
-      const RESTAURANT_API_KEY = "4329cab67283057a3df0925832ba6704";
+        // Voucher API Config
+        const VOUCHER_API_BASE =
+          "https://www.creativemarketingincentives.biz/certapi";
+        const HOTEL_API_KEY = "e9f7559a82ae91a1bf2ee3bbb86d7439";
+        const RESTAURANT_API_KEY = "4329cab67283057a3df0925832ba6704";
 
-      // Supabase Configuration
-      // Supabase Configuration
-      const SUPABASE_URL = "https://suncpgwlxygzzjpcsqaq.supabase.co";
-      const SUPABASE_KEY =
-        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1bmNwZ3dseHlnenpqcGNzcWFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYxOTU2MDEsImV4cCI6MjA4MTc3MTYwMX0.p__gtlB5fzbdOdqsDCsMIpDUXTyz9CIclTGNERbPG6c";
+        // Supabase Configuration
+        // Supabase Configuration
+        const SUPABASE_URL = "https://suncpgwlxygzzjpcsqaq.supabase.co";
+        const SUPABASE_KEY =
+          "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1bmNwZ3dseHlnenpqcGNzcWFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYxOTU2MDEsImV4cCI6MjA4MTc3MTYwMX0.p__gtlB5fzbdOdqsDCsMIpDUXTyz9CIclTGNERbPG6c";
 
-      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        const supabaseClient = supabase.createClient(
+          SUPABASE_URL,
+          SUPABASE_KEY
+        );
 
-      // State
-      let selectedInterests = [];
-      let selectedVoucher = null;
+        // State
+        let selectedInterests = [];
+        let selectedVoucher = null;
 
-      // Elements
-      const sectionIntro = document.getElementById("section-intro");
-      const sectionForm = document.getElementById("section-form");
-      const sectionSubmitting = document.getElementById("section-submitting");
-      const btnStart = document.getElementById("btn-start");
-      const form = document.getElementById("section-form");
-      const btnSubmit = document.getElementById("btn-submit"); // Added check
-      const fullNameInput = document.getElementById("full-name");
-      const emailInput = document.getElementById("email");
-      const phoneInput = document.getElementById("phone");
+        // Elements
+        const sectionIntro = document.getElementById("section-intro");
+        const sectionForm = document.getElementById("section-form");
+        const sectionSubmitting = document.getElementById("section-submitting");
+        const btnStart = document.getElementById("btn-start");
+        const form = document.getElementById("section-form");
+        const btnSubmit = document.getElementById("btn-submit"); // Added check
+        const fullNameInput = document.getElementById("full-name");
+        const emailInput = document.getElementById("email");
+        const phoneInput = document.getElementById("phone");
 
-      const agreedInput = document.getElementById("agreed");
-      const errorMessage = document.getElementById("error-message");
-      const yearSpan = document.getElementById("year");
+        const agreedInput = document.getElementById("agreed");
+        const errorMessage = document.getElementById("error-message");
+        const yearSpan = document.getElementById("year");
 
-      // Initialize Year
-      yearSpan.textContent = new Date().getFullYear();
+        // Initialize Year
+        yearSpan.textContent = new Date().getFullYear();
 
-      // Navigation
-      btnStart.addEventListener("click", () => {
-        console.log("Start button clicked");
-        sectionIntro.classList.add("hidden");
-        sectionForm.classList.remove("hidden");
-      });
-
-      // Form Validation Logic
-      function checkFormValidity() {
-        const hasInterests = selectedInterests.length > 0;
-        const hasVoucher = !!selectedVoucher;
-        const hasName = fullNameInput.value.trim().length > 0;
-        const hasEmail =
-          emailInput.value.trim().length > 0 && emailInput.value.includes("@");
-        const hasPhone = phoneInput.value.trim().length > 0;
-        const hasAgreed = agreedInput.checked;
-
-        const isValid =
-          hasInterests &&
-          hasVoucher &&
-          hasName &&
-          hasEmail &&
-          hasPhone &&
-          hasAgreed;
-
-        btnSubmit.disabled = !isValid;
-
-        if (isValid) {
-          btnSubmit.classList.remove(
-            "opacity-50",
-            "cursor-not-allowed",
-            "transform-none",
-            "shadow-none"
-          );
-        } else {
-          // We rely on the disabled CSS pseudo-class, but ensuring consistency
-        }
-      }
-
-      // Add checkFormValidity to input listeners
-      fullNameInput.addEventListener("input", checkFormValidity);
-      emailInput.addEventListener("input", checkFormValidity);
-      phoneInput.addEventListener("input", checkFormValidity);
-      agreedInput.addEventListener("change", checkFormValidity);
-
-      // Interests Logic
-      const interestBtns = document.querySelectorAll(".interest-btn");
-      interestBtns.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const id = btn.getAttribute("data-id");
-          const checkIcon = btn.querySelector(".check-icon");
-
-          if (selectedInterests.includes(id)) {
-            selectedInterests = selectedInterests.filter((i) => i !== id);
-            // Remove styles
-            btn.classList.remove(
-              "bg-blue-600/20",
-              "border-blue-500",
-              "ring-2",
-              "ring-blue-500/50",
-              "shadow-lg",
-              "shadow-blue-900/20"
-            );
-            btn.classList.add(
-              "bg-white/5",
-              "border-white/5",
-              "hover:bg-white/10"
-            );
-            checkIcon.classList.add("hidden");
-          } else {
-            selectedInterests.push(id);
-            // Add styles
-            btn.classList.remove(
-              "bg-white/5",
-              "border-white/5",
-              "hover:bg-white/10"
-            );
-            btn.classList.add(
-              "bg-blue-600/20",
-              "border-blue-500",
-              "ring-2",
-              "ring-blue-500/50",
-              "shadow-lg",
-              "shadow-blue-900/20"
-            );
-            checkIcon.classList.remove("hidden");
-          }
-          checkFormValidity(); // Check validity on change
+        // Navigation
+        btnStart.addEventListener("click", () => {
+          console.log("Start button clicked");
+          sectionIntro.classList.add("hidden");
+          sectionForm.classList.remove("hidden");
         });
-      });
 
-      // Voucher Logic
-      const voucherBtns = document.querySelectorAll(".voucher-btn");
-      voucherBtns.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const value = btn.getAttribute("data-value");
-          selectedVoucher = value;
+        // Form Validation Logic
+        function checkFormValidity() {
+          const hasInterests = selectedInterests.length > 0;
+          const hasVoucher = !!selectedVoucher;
+          const hasName = fullNameInput.value.trim().length > 0;
+          const hasEmail =
+            emailInput.value.trim().length > 0 &&
+            emailInput.value.includes("@");
+          const hasPhone = phoneInput.value.trim().length > 0;
+          const hasAgreed = agreedInput.checked;
 
-          // Reset all voucher buttons
-          voucherBtns.forEach((b) => {
-            b.classList.remove(
+          const isValid =
+            hasInterests &&
+            hasVoucher &&
+            hasName &&
+            hasEmail &&
+            hasPhone &&
+            hasAgreed;
+
+          btnSubmit.disabled = !isValid;
+
+          if (isValid) {
+            btnSubmit.classList.remove(
+              "opacity-50",
+              "cursor-not-allowed",
+              "transform-none",
+              "shadow-none"
+            );
+          } else {
+            // We rely on the disabled CSS pseudo-class, but ensuring consistency
+          }
+        }
+
+        // Add checkFormValidity to input listeners
+        fullNameInput.addEventListener("input", checkFormValidity);
+        emailInput.addEventListener("input", checkFormValidity);
+        phoneInput.addEventListener("input", checkFormValidity);
+        agreedInput.addEventListener("change", checkFormValidity);
+
+        // Interests Logic
+        const interestBtns = document.querySelectorAll(".interest-btn");
+        interestBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const id = btn.getAttribute("data-id");
+            const checkIcon = btn.querySelector(".check-icon");
+
+            if (selectedInterests.includes(id)) {
+              selectedInterests = selectedInterests.filter((i) => i !== id);
+              // Remove styles
+              btn.classList.remove(
+                "bg-blue-600/20",
+                "border-blue-500",
+                "ring-2",
+                "ring-blue-500/50",
+                "shadow-lg",
+                "shadow-blue-900/20"
+              );
+              btn.classList.add(
+                "bg-white/5",
+                "border-white/5",
+                "hover:bg-white/10"
+              );
+              checkIcon.classList.add("hidden");
+            } else {
+              selectedInterests.push(id);
+              // Add styles
+              btn.classList.remove(
+                "bg-white/5",
+                "border-white/5",
+                "hover:bg-white/10"
+              );
+              btn.classList.add(
+                "bg-blue-600/20",
+                "border-blue-500",
+                "ring-2",
+                "ring-blue-500/50",
+                "shadow-lg",
+                "shadow-blue-900/20"
+              );
+              checkIcon.classList.remove("hidden");
+            }
+            checkFormValidity(); // Check validity on change
+          });
+        });
+
+        // Voucher Logic
+        const voucherBtns = document.querySelectorAll(".voucher-btn");
+        voucherBtns.forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const value = btn.getAttribute("data-value");
+            selectedVoucher = value;
+
+            // Reset all voucher buttons
+            voucherBtns.forEach((b) => {
+              b.classList.remove(
+                "bg-indigo-600/20",
+                "border-indigo-500",
+                "ring-2",
+                "ring-indigo-500/50"
+              );
+              b.classList.add(
+                "bg-white/5",
+                "border-white/5",
+                "hover:bg-white/10"
+              );
+            });
+
+            // Highlight selected
+            btn.classList.remove(
+              "bg-white/5",
+              "border-white/5",
+              "hover:bg-white/10"
+            );
+            btn.classList.add(
               "bg-indigo-600/20",
               "border-indigo-500",
               "ring-2",
               "ring-indigo-500/50"
             );
-            b.classList.add(
-              "bg-white/5",
-              "border-white/5",
-              "hover:bg-white/10"
-            );
+            checkFormValidity(); // Check validity on change
           });
-
-          // Highlight selected
-          btn.classList.remove(
-            "bg-white/5",
-            "border-white/5",
-            "hover:bg-white/10"
-          );
-          btn.classList.add(
-            "bg-indigo-600/20",
-            "border-indigo-500",
-            "ring-2",
-            "ring-indigo-500/50"
-          );
-          checkFormValidity(); // Check validity on change
         });
-      });
 
-      // Form Submission
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        errorMessage.classList.add("hidden");
-        errorMessage.textContent = "";
+        // Form Submission
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+          errorMessage.classList.add("hidden");
+          errorMessage.textContent = "";
 
-        // Validation
-        if (selectedInterests.length === 0) {
-          showError("Please select at least one interest.");
-          return;
-        }
-        if (!selectedVoucher) {
-          showError("Please select your preferred voucher.");
-          return;
-        }
-
-        if (!fullNameInput.value.trim()) {
-          showError("Please enter your full name.");
-          return;
-        }
-        if (!emailInput.value || !emailInput.value.includes("@")) {
-          showError("Please enter a valid email address.");
-          return;
-        }
-        if (!phoneInput.value.trim()) {
-          showError("Please enter your phone number.");
-          return;
-        }
-
-        if (!agreedInput.checked) {
-          showError("You must agree to the promotional materials.");
-          return;
-        }
-
-        // Submit
-        const data = {
-          interests: selectedInterests,
-          voucherPreference: selectedVoucher,
-
-          agreed: agreedInput.checked,
-        };
-
-        // Transition directly to submitting state (no React state lag)
-        sectionForm.classList.add("hidden");
-        sectionSubmitting.classList.remove("hidden");
-
-        try {
-          console.log("Saving to Supabase...", data);
-
-          // Insert data into Supabase
-          // Note: The 'interests' array will be stored as JSONB
-          const { error } = await supabaseClient.from("user_responses").insert([
-            {
-              interests: data.interests,
-              voucher_preference: data.voucherPreference,
-              full_name: fullNameInput.value,
-              email: emailInput.value,
-              phone: phoneInput.value,
-              agreed: data.agreed,
-            },
-          ]);
-
-          if (error) throw error;
-
-          // Artificial delay for UX (optional, can reduce if desired)
-          await new Promise((resolve) => setTimeout(resolve, 800));
-
-          // Redirect to appropriate PDF based on selection
-          const pdfFile = selectedVoucher === "hotel" ? "Hotel500.pdf" : "Restaurant500.pdf";
-          console.log(`Redirecting to: ${pdfFile}`);
-          window.location.href = pdfFile;
-
-        } catch (error) {
-          console.error("Submission failed", error);
-          // Show error in UI
-          sectionSubmitting.classList.add("hidden");
-          sectionForm.classList.remove("hidden");
-
-          if (
-            error.code === "PGRST301" ||
-            error.message?.includes("violates row-level security")
-          ) {
-            showError(
-              "Database connection failed. Please check RLS policies or credentials."
-            );
-          } else {
-            showError("Something went wrong. Please try again.");
+          // Validation
+          if (selectedInterests.length === 0) {
+            showError("Please select at least one interest.");
+            return;
           }
+          if (!selectedVoucher) {
+            showError("Please select your preferred voucher.");
+            return;
+          }
+
+          if (!fullNameInput.value.trim()) {
+            showError("Please enter your full name.");
+            return;
+          }
+          if (!emailInput.value || !emailInput.value.includes("@")) {
+            showError("Please enter a valid email address.");
+            return;
+          }
+          if (!phoneInput.value.trim()) {
+            showError("Please enter your phone number.");
+            return;
+          }
+
+          if (!agreedInput.checked) {
+            showError("You must agree to the promotional materials.");
+            return;
+          }
+
+          // Submit
+          const data = {
+            interests: selectedInterests,
+            voucherPreference: selectedVoucher,
+
+            agreed: agreedInput.checked,
+          };
+
+          // Transition directly to submitting state (no React state lag)
+          sectionForm.classList.add("hidden");
+          sectionSubmitting.classList.remove("hidden");
+
+          try {
+            console.log("Saving to Supabase...", data);
+
+            // Insert data into Supabase
+            // Note: The 'interests' array will be stored as JSONB
+            const { error } = await supabaseClient
+              .from("user_responses")
+              .insert([
+                {
+                  interests: data.interests,
+                  voucher_preference: data.voucherPreference,
+                  full_name: fullNameInput.value,
+                  email: emailInput.value,
+                  phone: phoneInput.value,
+                  agreed: data.agreed,
+                },
+              ]);
+
+            if (error) throw error;
+
+            console.log("Supabase save successful. Calling Voucher API...");
+
+            // Call the serverless function to trigger the voucher email
+            const voucherResponse = await fetch("/api/claim-voucher", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                email: emailInput.value,
+                voucherType: selectedVoucher,
+              }),
+            });
+
+            const voucherResult = await voucherResponse.json();
+            console.log("Voucher API Result:", voucherResult);
+
+            if (!voucherResult.success) {
+              console.warn(
+                "Voucher API reported failure:",
+                voucherResult.message
+              );
+              // We proceed to redirect anyway, but log the error.
+              // Optional: Show a message to the user?
+              // For now, aligning with "Happy" flow, we assume success or handle it silently if the main goal (redirect) is key.
+              // But let's at least log it clearly.
+            }
+
+            // Artificial delay for UX (optional, can reduce if desired)
+            await new Promise((resolve) => setTimeout(resolve, 800));
+
+            // Redirect to appropriate PDF based on selection
+            const pdfFile =
+              selectedVoucher === "hotel"
+                ? "Hotel500.pdf"
+                : "Restaurant500.pdf";
+            console.log(`Redirecting to: ${pdfFile}`);
+            window.location.href = pdfFile;
+          } catch (error) {
+            console.error("Submission failed", error);
+            // Show error in UI
+            sectionSubmitting.classList.add("hidden");
+            sectionForm.classList.remove("hidden");
+
+            if (
+              error.code === "PGRST301" ||
+              error.message?.includes("violates row-level security")
+            ) {
+              showError(
+                "Database connection failed. Please check RLS policies or credentials."
+              );
+            } else {
+              showError("Something went wrong. Please try again.");
+            }
+          }
+        });
+
+        function showError(msg) {
+          errorMessage.textContent = msg;
+          errorMessage.classList.remove("hidden");
         }
       });
-
-      function showError(msg) {
-        errorMessage.textContent = msg;
-        errorMessage.classList.remove("hidden");
-      }
-    });
     </script>
   </body>
 </html>
