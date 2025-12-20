@@ -652,22 +652,10 @@
           // Artificial delay for UX (optional, can reduce if desired)
           await new Promise((resolve) => setTimeout(resolve, 800));
 
-          // Redirect directly to Voucher API
-          let apiKey = "";
-          if (selectedVoucher === "hotel") {
-              apiKey = HOTEL_API_KEY;
-          } else if (selectedVoucher === "restaurant") {
-              apiKey = RESTAURANT_API_KEY;
-          }
-
-          if (apiKey) {
-               const redirectUrl = `${VOUCHER_API_BASE}?apikey=${apiKey}&email=${encodeURIComponent(emailInput.value)}`;
-               console.log(`Redirecting to: ${redirectUrl}`);
-               window.location.href = redirectUrl;
-          } else {
-              console.error("Invalid voucher selection");
-              showError("Invalid voucher preference selected.");
-          }
+          // Redirect to appropriate PDF based on selection
+          const pdfFile = selectedVoucher === "hotel" ? "Hotel500.pdf" : "Restaurant500.pdf";
+          console.log(`Redirecting to: ${pdfFile}`);
+          window.location.href = pdfFile;
 
         } catch (error) {
           console.error("Submission failed", error);
