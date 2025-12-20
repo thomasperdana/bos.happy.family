@@ -7,8 +7,9 @@ export default async function handler(request, response) {
   // --- SECURITY CHECK: Origin Verification ---
   // In production, verify that the request comes from our allowed domain (NEXT_PUBLIC_URL)
   const allowedOrigin = process.env.NEXT_PUBLIC_URL; // e.g., "https://bos-happy-family.vercel.app/"
-  const origin = request.headers.get('origin');
-  const host = request.headers.get('host'); // Fallback check
+  // Node.js Vercel functions use a plain object for headers, not .get()
+  const origin = request.headers['origin'];
+  const host = request.headers['host']; // Fallback check
 
   // If NEXT_PUBLIC_URL is set, we strictly check origin/host for production security
   if (allowedOrigin) {
