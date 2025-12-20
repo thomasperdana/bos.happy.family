@@ -118,7 +118,7 @@
             </p>
             <button
               id="btn-start"
-              class="mt-4 px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-2xl shadow-lg shadow-blue-900/40 transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 group"
+              class="relative z-50 mt-4 px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white font-bold rounded-2xl shadow-lg shadow-blue-900/40 transition-all transform hover:scale-105 active:scale-95 flex items-center justify-center gap-2 group"
             >
               Start Your Journey
               <svg
@@ -413,6 +413,7 @@
     </footer>
 
     <script>
+      document.addEventListener('DOMContentLoaded', () => {
       // Constants & Config
       const RESTAURANT_URL =
         "https://www.rewardsandincentives.com/?bcode=40da2c6eb4af643ce37c275f5538ef65";
@@ -457,6 +458,7 @@
 
       // Navigation
       btnStart.addEventListener("click", () => {
+        console.log("Start button clicked");
         sectionIntro.classList.add("hidden");
         sectionForm.classList.remove("hidden");
       });
@@ -690,6 +692,7 @@
         errorMessage.textContent = msg;
         errorMessage.classList.remove("hidden");
       }
+    });
     </script>
   </body>
 </html>
