@@ -1,0 +1,11 @@
+{
+  "name": "bos-happy-family",
+  "version": "1.0.0",
+  "description": "Happy Family Lifestyle - Vanilla HTML",
+  "scripts": {
+    "build": "echo 'No build step required'"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

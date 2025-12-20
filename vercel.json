@@ -1,0 +1,4 @@
+{
+  "framework": null,
+  "buildCommand": "echo 'Skipping build for vanilla HTML - No build step required'"
+}
