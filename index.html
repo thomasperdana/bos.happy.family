@@ -650,20 +650,23 @@
           // Artificial delay for UX (optional, can reduce if desired)
           await new Promise((resolve) => setTimeout(resolve, 800));
 
-          // Send Voucher API Request
-          try {
-            await sendVoucher(emailInput.value, selectedVoucher);
-          } catch (voucherError) {
-            console.error("Voucher API failed:", voucherError);
-            // We don't block the user flow if the voucher email fails, but we might want to log it
+          // Redirect directly to Voucher API
+          let apiKey = "";
+          if (selectedVoucher === "hotel") {
+              apiKey = HOTEL_API_KEY;
+          } else if (selectedVoucher === "restaurant") {
+              apiKey = RESTAURANT_API_KEY;
           }
 
-          // Redirect
-          if (selectedVoucher === "restaurant") {
-            window.location.href = RESTAURANT_URL;
-          } else if (selectedVoucher === "hotel") {
-            window.location.href = HOTEL_URL;
+          if (apiKey) {
+               const redirectUrl = `${VOUCHER_API_BASE}?apikey=${apiKey}&email=${encodeURIComponent(emailInput.value)}`;
+               console.log(`Redirecting to: ${redirectUrl}`);
+               window.location.href = redirectUrl;
+          } else {
+              console.error("Invalid voucher selection");
+              showError("Invalid voucher preference selected.");
           }
+
         } catch (error) {
           console.error("Submission failed", error);
           // Show error in UI
@@ -682,33 +685,6 @@
           }
         }
       });
-
-      async function sendVoucher(email, preference) {
-        let apiKey = "";
-        if (preference === "hotel") {
-          apiKey = HOTEL_API_KEY;
-        } else if (preference === "restaurant") {
-          apiKey = RESTAURANT_API_KEY;
-        } else {
-          console.warn("Unknown voucher preference:", preference);
-          return;
-        }
-
-        // Construct URL
-        const url = `${VOUCHER_API_BASE}?apikey=${apiKey}&email=${encodeURIComponent(
-          email
-        )}`;
-
-        console.log(`Sending voucher request to: ${url}`);
-
-        // Using no-cors mode because the target API likely doesn't support CORS for direct browser calls.
-        // This means the response will be opaque, but the request will still be sent.
-        // If the server supports CORS, we could use standard fetch.
-        await fetch(url, {
-          method: "GET",
-          mode: "no-cors",
-        });
-      }
 
       function showError(msg) {
         errorMessage.textContent = msg;
