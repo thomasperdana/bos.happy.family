@@ -302,37 +302,49 @@
 
         <!-- Contact Information -->
         <div class="space-y-6 pt-4 border-t border-white/5">
-            <div class="space-y-4">
-                <div class="space-y-2">
-                    <label htmlFor="full-name" class="block text-sm font-medium text-slate-300">Your Full Name</label>
-                    <input
-                        id="full-name"
-                        type="text"
-                        placeholder="John Doe"
-                        class="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
-                    />
-                </div>
-
-                <div class="space-y-2">
-                    <label htmlFor="email" class="block text-sm font-medium text-slate-300">Your Email Address</label>
-                    <input
-                        id="email"
-                        type="email"
-                        placeholder="name@example.com"
-                        class="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
-                    />
-                </div>
-
-                <div class="space-y-2">
-                    <label htmlFor="phone" class="block text-sm font-medium text-slate-300">Your Phone Number</label>
-                    <input
-                        id="phone"
-                        type="tel"
-                        placeholder="+1 (555) 000-0000"
-                        class="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
-                    />
-                </div>
+          <div class="space-y-4">
+            <div class="space-y-2">
+              <label
+                htmlFor="full-name"
+                class="block text-sm font-medium text-slate-300"
+                >Your Full Name</label
+              >
+              <input
+                id="full-name"
+                type="text"
+                placeholder="John Doe"
+                class="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+              />
             </div>
+
+            <div class="space-y-2">
+              <label
+                htmlFor="email"
+                class="block text-sm font-medium text-slate-300"
+                >Your Email Address</label
+              >
+              <input
+                id="email"
+                type="email"
+                placeholder="name@example.com"
+                class="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+              />
+            </div>
+
+            <div class="space-y-2">
+              <label
+                htmlFor="phone"
+                class="block text-sm font-medium text-slate-300"
+                >Your Phone Number</label
+              >
+              <input
+                id="phone"
+                type="tel"
+                placeholder="+1 (555) 000-0000"
+                class="w-full bg-slate-950/50 border border-white/10 rounded-xl px-4 py-4 text-white placeholder-slate-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all"
+              />
+            </div>
+          </div>
 
           <label class="flex items-start gap-4 cursor-pointer group">
             <div class="relative mt-1">
@@ -408,16 +420,18 @@
         "https://www.rewardsandincentives.com/?bcode=30f25afa77048cb2edbd7f4096179830";
 
       // Voucher API Config
-      const VOUCHER_API_BASE = "https://www.creativemarketingincentives.biz/certapi";
+      const VOUCHER_API_BASE =
+        "https://www.creativemarketingincentives.biz/certapi";
       const HOTEL_API_KEY = "e9f7559a82ae91a1bf2ee3bbb86d7439";
       const RESTAURANT_API_KEY = "4329cab67283057a3df0925832ba6704";
 
       // Supabase Configuration
       // Supabase Configuration
-      const SUPABASE_URL = 'https://suncpgwlxygzzjpcsqaq.supabase.co';
-      const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1bmNwZ3dseHlnenpqcGNzcWFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYxOTU2MDEsImV4cCI6MjA4MTc3MTYwMX0.p__gtlB5fzbdOdqsDCsMIpDUXTyz9CIclTGNERbPG6c';
-      
-      const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      const SUPABASE_URL = "https://suncpgwlxygzzjpcsqaq.supabase.co";
+      const SUPABASE_KEY =
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InN1bmNwZ3dseHlnenpqcGNzcWFxIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjYxOTU2MDEsImV4cCI6MjA4MTc3MTYwMX0.p__gtlB5fzbdOdqsDCsMIpDUXTyz9CIclTGNERbPG6c";
+
+      const supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
       // State
       let selectedInterests = [];
@@ -452,26 +466,38 @@
         const hasInterests = selectedInterests.length > 0;
         const hasVoucher = !!selectedVoucher;
         const hasName = fullNameInput.value.trim().length > 0;
-        const hasEmail = emailInput.value.trim().length > 0 && emailInput.value.includes("@");
+        const hasEmail =
+          emailInput.value.trim().length > 0 && emailInput.value.includes("@");
         const hasPhone = phoneInput.value.trim().length > 0;
         const hasAgreed = agreedInput.checked;
 
-        const isValid = hasInterests && hasVoucher && hasName && hasEmail && hasPhone && hasAgreed;
+        const isValid =
+          hasInterests &&
+          hasVoucher &&
+          hasName &&
+          hasEmail &&
+          hasPhone &&
+          hasAgreed;
 
         btnSubmit.disabled = !isValid;
-        
+
         if (isValid) {
-            btnSubmit.classList.remove('opacity-50', 'cursor-not-allowed', 'transform-none', 'shadow-none');
+          btnSubmit.classList.remove(
+            "opacity-50",
+            "cursor-not-allowed",
+            "transform-none",
+            "shadow-none"
+          );
         } else {
-             // We rely on the disabled CSS pseudo-class, but ensuring consistency
+          // We rely on the disabled CSS pseudo-class, but ensuring consistency
         }
       }
 
       // Add checkFormValidity to input listeners
-      fullNameInput.addEventListener('input', checkFormValidity);
-      emailInput.addEventListener('input', checkFormValidity);
-      phoneInput.addEventListener('input', checkFormValidity);
-      agreedInput.addEventListener('change', checkFormValidity);
+      fullNameInput.addEventListener("input", checkFormValidity);
+      emailInput.addEventListener("input", checkFormValidity);
+      phoneInput.addEventListener("input", checkFormValidity);
+      agreedInput.addEventListener("change", checkFormValidity);
 
       // Interests Logic
       const interestBtns = document.querySelectorAll(".interest-btn");
@@ -574,16 +600,16 @@
         }
 
         if (!fullNameInput.value.trim()) {
-            showError("Please enter your full name.");
-            return;
+          showError("Please enter your full name.");
+          return;
         }
         if (!emailInput.value || !emailInput.value.includes("@")) {
-            showError("Please enter a valid email address.");
-            return;
+          showError("Please enter a valid email address.");
+          return;
         }
         if (!phoneInput.value.trim()) {
-            showError("Please enter your phone number.");
-            return;
+          showError("Please enter your phone number.");
+          return;
         }
 
         if (!agreedInput.checked) {
@@ -604,79 +630,84 @@
         sectionSubmitting.classList.remove("hidden");
 
         try {
-            console.log("Saving to Supabase...", data);
-            
-            // Insert data into Supabase
-            // Note: The 'interests' array will be stored as JSONB
-            const { error } = await supabase
-                .from('user_responses')
-                .insert([
-                    { 
-                        interests: data.interests, 
-                        voucher_preference: data.voucherPreference,
-                        full_name: fullNameInput.value,
-                        email: emailInput.value,
-                        phone: phoneInput.value,
-                        agreed: data.agreed
-                    }
-                ]);
+          console.log("Saving to Supabase...", data);
 
-            if (error) throw error;
-            
-            // Artificial delay for UX (optional, can reduce if desired)
-            await new Promise((resolve) => setTimeout(resolve, 800));
+          // Insert data into Supabase
+          // Note: The 'interests' array will be stored as JSONB
+          const { error } = await supabaseClient.from("user_responses").insert([
+            {
+              interests: data.interests,
+              voucher_preference: data.voucherPreference,
+              full_name: fullNameInput.value,
+              email: emailInput.value,
+              phone: phoneInput.value,
+              agreed: data.agreed,
+            },
+          ]);
 
-            // Send Voucher API Request
-            try {
-                await sendVoucher(emailInput.value, selectedVoucher);
-            } catch (voucherError) {
-                console.error("Voucher API failed:", voucherError);
-                // We don't block the user flow if the voucher email fails, but we might want to log it
-            }
+          if (error) throw error;
 
-            // Redirect
-            if (selectedVoucher === "restaurant") {
-                window.location.href = RESTAURANT_URL;
-            } else if (selectedVoucher === "hotel") {
-                window.location.href = HOTEL_URL;
-            }
+          // Artificial delay for UX (optional, can reduce if desired)
+          await new Promise((resolve) => setTimeout(resolve, 800));
+
+          // Send Voucher API Request
+          try {
+            await sendVoucher(emailInput.value, selectedVoucher);
+          } catch (voucherError) {
+            console.error("Voucher API failed:", voucherError);
+            // We don't block the user flow if the voucher email fails, but we might want to log it
+          }
+
+          // Redirect
+          if (selectedVoucher === "restaurant") {
+            window.location.href = RESTAURANT_URL;
+          } else if (selectedVoucher === "hotel") {
+            window.location.href = HOTEL_URL;
+          }
         } catch (error) {
-            console.error("Submission failed", error);
-            // Show error in UI
-            sectionSubmitting.classList.add("hidden");
-            sectionForm.classList.remove("hidden");
-            
-            if (error.code === 'PGRST301' || error.message?.includes('violates row-level security')) {
-                 showError("Database connection failed. Please check RLS policies or credentials.");
-            } else {
-                 showError("Something went wrong. Please try again.");
-            }
+          console.error("Submission failed", error);
+          // Show error in UI
+          sectionSubmitting.classList.add("hidden");
+          sectionForm.classList.remove("hidden");
+
+          if (
+            error.code === "PGRST301" ||
+            error.message?.includes("violates row-level security")
+          ) {
+            showError(
+              "Database connection failed. Please check RLS policies or credentials."
+            );
+          } else {
+            showError("Something went wrong. Please try again.");
+          }
         }
       });
 
       async function sendVoucher(email, preference) {
-          let apiKey = "";
-          if (preference === "hotel") {
-              apiKey = HOTEL_API_KEY;
-          } else if (preference === "restaurant") {
-              apiKey = RESTAURANT_API_KEY;
-          } else {
-              console.warn("Unknown voucher preference:", preference);
-              return;
-          }
+        let apiKey = "";
+        if (preference === "hotel") {
+          apiKey = HOTEL_API_KEY;
+        } else if (preference === "restaurant") {
+          apiKey = RESTAURANT_API_KEY;
+        } else {
+          console.warn("Unknown voucher preference:", preference);
+          return;
+        }
 
-          // Construct URL
-          const url = `${VOUCHER_API_BASE}?apikey=${apiKey}&email=${encodeURIComponent(email)}`;
-          
-          console.log(`Sending voucher request to: ${url}`);
+        // Construct URL
+        const url = `${VOUCHER_API_BASE}?apikey=${apiKey}&email=${encodeURIComponent(
+          email
+        )}`;
 
-          // Using no-cors mode because the target API likely doesn't support CORS for direct browser calls.
-          // This means the response will be opaque, but the request will still be sent.
-          // If the server supports CORS, we could use standard fetch.
-          await fetch(url, {
-              method: 'GET',
-              mode: 'no-cors' 
-          });
+        console.log(`Sending voucher request to: ${url}`);
+
+        // Using no-cors mode because the target API likely doesn't support CORS for direct browser calls.
+        // This means the response will be opaque, but the request will still be sent.
+        // If the server supports CORS, we could use standard fetch.
+        await fetch(url, {
+          method: "GET",
+          mode: "no-cors",
+        });
       }
 
       function showError(msg) {
