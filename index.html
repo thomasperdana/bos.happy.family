@@ -409,18 +409,9 @@
             <!-- REWARD SECTION -->
       <div
         id="section-reward"
-        class="hidden max-w-3xl w-full text-center animate-fade-in space-y-8"
+        class="hidden w-full text-center animate-fade-in flex items-center justify-center p-4"
       >
-        <div class="space-y-4">
-          <h2 class="text-4xl md:text-5xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-indigo-500">
-            Congratulations!
-          </h2>
-          <p class="text-xl text-slate-300">
-            Here is your exclusive reward. Enjoy it with your family!
-          </p>
-        </div>
-
-        <div class="relative group mx-auto max-w-2xl transform transition-all duration-500 hover:scale-[1.02]">
+        <div class="relative group mx-auto max-w-4xl transform transition-all duration-500">
           <div class="absolute inset-0 bg-blue-600 rounded-2xl blur-2xl opacity-20 group-hover:opacity-30 transition-opacity"></div>
           <img
             id="reward-image"
@@ -428,26 +419,6 @@
             alt="Your Reward Voucher"
             class="relative rounded-2xl shadow-2xl border border-white/10 w-full"
           />
-        </div>
-
-        <div class="flex flex-col sm:flex-row gap-4 justify-center pt-8">
-          <a
-            id="btn-download"
-            href="#"
-            download
-            class="px-8 py-4 bg-white text-slate-900 font-bold rounded-xl shadow-lg hover:bg-slate-100 transition-all flex items-center justify-center gap-2"
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
-            </svg>
-            Download Voucher
-          </a>
-          <button
-            onclick="location.reload()"
-            class="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-semibold rounded-xl transition-all border border-white/10"
-          >
-            Start Over
-          </button>
         </div>
       </div>
     </main>
@@ -702,33 +673,37 @@
 
             console.log("Supabase save successful. Calling Voucher API...");
 
-            // Call the serverless function to trigger the voucher email
-            const voucherResponse = await fetch("/api/claim-voucher", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                email: emailInput.value,
-                voucherType: selectedVoucher,
-              }),
-            });
+            // Nested tryapi catch for the Voucher API to ensure we don't block the reward UI
+            // if the backend email service fails (e.g. running locally without venv)
+            try {
+                // Call the serverless function to trigger the voucher email
+                const voucherResponse = await fetch("/api/claim-voucher", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({
+                    email: emailInput.value,
+                    voucherType: selectedVoucher,
+                  }),
+                });
 
-            if (!voucherResponse.ok) {
-              const text = await voucherResponse.text();
-              console.warn(`Voucher API failed (${voucherResponse.status}):`, text);
-              // Do not throw, just log. The user still gets their PDF.
-            } else {
-              const voucherResult = await voucherResponse.json();
-              console.log("Voucher API Result:", voucherResult);
-              if (!voucherResult.success) {
-                console.warn("Voucher API reported failure:", voucherResult.message);
-              }
+                if (!voucherResponse.ok) {
+                  const text = await voucherResponse.text();
+                  console.warn(`Voucher API failed (${voucherResponse.status}):`, text);
+                } else {
+                  const voucherResult = await voucherResponse.json();
+                  console.log("Voucher API Result:", voucherResult);
+                  if (!voucherResult.success) {
+                    console.warn("Voucher API reported failure:", voucherResult.message);
+                  }
+                }
+            } catch (authApiError) {
+                console.warn("Voucher API network error (ignoring and proceeding):", authApiError);
             }
 
       const sectionReward = document.getElementById("section-reward");
       const rewardImage = document.getElementById("reward-image");
-      const btnDownload = document.getElementById("btn-download");
 
 
 
@@ -745,10 +720,6 @@
             // Update Image Source
             rewardImage.src = rewardFile;
             
-            // Update Download Button
-            btnDownload.href = rewardFile;
-            btnDownload.download = rewardFile;
-
           } catch (error) {
             console.error("Submission failed", error);
             // Show error in UI

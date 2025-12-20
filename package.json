@@ -5,6 +5,9 @@
   "scripts": {
     "build": "echo 'No build step required'"
   },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC"
