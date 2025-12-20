@@ -1,4 +1,5 @@
 {
   "framework": null,
-  "buildCommand": "echo 'Skipping build for vanilla HTML - No build step required'"
+  "buildCommand": "echo 'Skipping build for vanilla HTML - No build step required'",
+  "outputDirectory": "."
 }
