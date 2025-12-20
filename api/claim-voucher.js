@@ -51,22 +51,34 @@ export default async function handler(request, response) {
   }
 
   const apiKey = voucherType === 'hotel' ? HOTEL_API_KEY : RESTAURANT_API_KEY;
+  // Mask key for logging
+  const maskedKey = apiKey ? `${apiKey.substring(0, 4)}...${apiKey.substring(apiKey.length - 4)}` : 'MISSING';
+  console.log(`[API START] Processing for ${email} (${voucherType}). Key: ${maskedKey}`);
+
   const apiUrl = `https://www.creativemarketingincentives.biz/certapi?apikey=${apiKey}&email=${encodeURIComponent(email)}`;
 
   try {
-    const apiResponse = await fetch(apiUrl);
+    // Some legacy APIs block requests without a User-Agent
+    const apiResponse = await fetch(apiUrl, {
+        headers: {
+            'User-Agent': 'Mozilla/5.0 (Vercel Serverless Function test)'
+        }
+    });
+    
+    console.log(`[API RESPONSE] Status: ${apiResponse.status} ${apiResponse.statusText}`);
+    
     const text = await apiResponse.text();
-
-    console.log(`Voucher API Response for ${email} (${voucherType}):`, text);
+    console.log(`[API BODY] ${text}`);
 
     if (text.includes("SUCCESS")) {
       return response.status(200).json({ success: true, message: "Voucher sent successfully" });
     } else {
-      return response.status(400).json({ success: false, message: "Voucher API failed", error: text });
+      console.error(`[API FAIL] Upstream API returned error: ${text}`);
+      return response.status(400).json({ success: false, message: "Voucher API upstream failure", error: text });
     }
 
   } catch (error) {
-    console.error("Voucher API Error:", error);
-    return response.status(500).json({ success: false, error: "Internal Server Error" });
+    console.error("[API CRASH]", error);
+    return response.status(500).json({ success: false, error: "Internal Server Error", details: error.message });
   }
 }
